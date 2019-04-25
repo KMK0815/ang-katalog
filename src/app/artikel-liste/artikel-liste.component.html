@@ -1,0 +1,26 @@
+<div class="itemListCategoriesBlock">
+  <div class="itemsCategory">
+    <h2>{{ mainHeader }}</h2>
+  </div>
+</div>
+<div class="itemListCategoriesBlock">
+  <div class="itemList">
+    <div id="itemListSecondary">
+      <div class="itemContainer itemContainerLast" style="width:99.9%;">
+        <article class="itemView groupSecondary">  		 
+            <div class="itemBlock">
+              <h4>
+                <a href="/index.php/produktpalette/feststellanlage-rz-24-fa/anwendungsbereiche">{{ secondaryHeader }}</a>
+              </h4>
+              <div class="itemBody">
+                <div class="itemIntroText"></div>
+              </div>
+            </div>
+        </article>
+        
+        <app-small-artikel *ngFor="let artikel of allArtikelData; index as i;" [artikelData]="artikel"></app-small-artikel>
+
+      </div>
+    </div>
+  </div>
+</div>

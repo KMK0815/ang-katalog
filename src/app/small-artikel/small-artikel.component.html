@@ -1,0 +1,22 @@
+<div class="itemContainer itemContainerLast" style="width:99.9%;">
+  <article class="itemView groupSecondary">
+    <div class="itemBlock">
+      <div class="itemImageBlock"> 
+        <img [src]="'https://protronic-gmbh.de/images/thumb/' + this.artikelData.Artikelnummer + '_thumb.png'" alt="" style="width: 100px; height: 100px;">						
+      </div>
+      <h4>
+        <a href="">{{ this.artikelData.Bezeichnung1 }}</a>
+      </h4>
+      <div class="itemBody">  												
+        <div class="itemIntroText"> {{ this.artikelData.Langtext }} </div>
+        <div class="itemExtraFields">
+          <ul>
+            Artikelnummer:
+            {{ this.artikelData.Artikelnummer }}																																																																									
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+</div>
+<div class="clr"></div>
