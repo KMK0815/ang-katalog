@@ -1,25 +1,48 @@
 import { Component, OnInit } from '@angular/core';
 import { ArtikelData } from './artikel-data';
+import { encode } from 'punycode';
 
 @Component({
   selector: 'app-root',
-  template: `
-   <div id="k2Container"><app-artikel *ngFor="let artikel of this.filteredArtikelData; index as i;" [artikelVortext]="allVortextData[i]" [artikelData]="artikel" [similarArtikelData]="allTagData[i]"></app-artikel></div>
-  `,
-   // template: `
-   //    <div id="k2Container"><app-artikel-liste [allArtikelData]="filteredArtikelData"></app-artikel-liste></div>
-   // `,
+  // template: `
+  //  <div id="k2Container"><app-artikel *ngFor="let artikel of this.filteredArtikelData; index as i;" [artikelVortext]="allVortextData[i]" [artikelData]="artikel" [similarArtikelData]="allTagData[i]"></app-artikel></div>
+  // `,
+   template: `
+      <div *ngIf="viewType === 'kategorie'" id="k2Container">
+        <app-artikel-liste [allArtikelData]="filteredKategorieData"></app-artikel-liste>
+      </div>
+      <div *ngIf="viewType === 'artikelDetails'" id="k2Container">
+        <app-artikel *ngFor="let artikel of this.filteredArtikelData; index as i;" [artikelVortext]="allVortextData[i]" [artikelData]="artikel" [similarArtikelData]="allTagData[i]"></app-artikel>
+      </div>
+      
+   `,
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
   
   ngOnInit(): void {
-    this.filteredArtikelData = this.data.filter(
-      value => {
-        if(value.Sprache === 'ZAN') return true; 
-        else return false;
-      }
-    )
+
+    let url = new URL(window.location.href);
+    let urlComponents = url.pathname.split('/');
+ 
+    console.log(url.pathname)
+
+    if(urlComponents.includes('item')){
+      this.viewType = 'artikelDetails'
+      this.filteredArtikelData = this.data.filter(
+        value => ((value.Sprache === 'ZAN' && encodeURI(value.Bezeichnung1) === urlComponents[urlComponents.length - 2]) ? true : false)
+      )
+    }
+    else{
+      this.viewType = 'kategorie'
+    }
+
+    // this.filteredArtikelData = this.data.filter(
+    //   value => {
+    //     if(value.Sprache === 'ZAN') return true; 
+    //     else return false;
+    //   }
+    // )
 
     for(let i in this.filteredArtikelData){
       let tmp = this.data.filter(
@@ -28,9 +51,11 @@ export class AppComponent implements OnInit{
       this.allVortextData[i] = tmp[0] && tmp[0].LangtextHTML ? tmp[0].LangtextHTML : ''
     }
 
+    // console.log(urlComponents[urlComponents.length - 2].replace('/', ''))
+
     this.filteredKategorieData = this.data.filter(
       value => {
-        if(value.USER_Kataloggruppe === this.route) return true;
+        if(encodeURI(value.USER_Kataloggruppe) === urlComponents[urlComponents.length - 2].replace('/', '')) return true;
         else return false;
       }
     )
@@ -50,12 +75,10 @@ export class AppComponent implements OnInit{
          this.allTagData[i] = this.filteredArtikelData[i].USER_KatalogTAG.split(',').reduce( (res, key) => (res[key] = this.tagData[key], res), {})
       }
     }
-    
-    console.log(this.route);
   }
   
   title = 'angular-katalog';
-  route: string = document.location.href.split('/').pop();
+  viewType: string;
   filteredArtikelData: ArtikelData[];
   filteredKategorieData: ArtikelData[];
   tagData: any = {};

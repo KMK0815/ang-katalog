@@ -7,7 +7,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "joomla_build": "ng build && create_joomla_component.sh && cp -r ./joomla/ ./dist/ && rm -f module.zip && powershell -Command Compress-Archive -Path ./dist/joomla/tmpl,./dist/joomla/helper.php,./dist/joomla/index.html,./dist/joomla/mod_ang_katalog.php,./dist/joomla/mod_ang_katalog.xml  -DestinationPath ./dist/module.zip"
   },
   "private": true,
   "dependencies": {
