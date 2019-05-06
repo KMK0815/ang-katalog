@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ArtikelData } from '../artikel-data';
+import { ArtikelData } from '../interfaces/artikel-data';
 
 @Component({
   selector: 'app-small-artikel',
@@ -8,10 +8,19 @@ import { ArtikelData } from '../artikel-data';
 })
 export class SmallArtikelComponent implements OnInit {
   @Input() artikelData: ArtikelData;
+  
+  showDetails: Boolean = false;
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  onClick(event: Event) {
+    this.showDetails = !this.showDetails;
+  }
+
+  // limitArtikeldetails(){
+  //   this.artikelData.LangtextHTML
+  // }
 }

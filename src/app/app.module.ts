@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { ArtikelComponent } from './artikel/artikel.component';
 import { ArtikelListeComponent } from './artikel-liste/artikel-liste.component';
 import { SmallArtikelComponent } from './small-artikel/small-artikel.component';
+import { VortextComponent } from './vortext/vortext.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ArtikelComponent,
     ArtikelListeComponent,
-    SmallArtikelComponent
+    SmallArtikelComponent,
+    VortextComponent
   ],
   imports: [
     BrowserModule,

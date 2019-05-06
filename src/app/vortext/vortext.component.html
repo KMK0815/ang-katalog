@@ -1,0 +1,10 @@
+<article class="itemView">
+  <div class="artikelVortext">
+    <h3>
+      <!-- <a href="javascript:;">{{ this.artikelData.Bezeichnung1 }}</a> -->
+      {{ this.artikelData.Bezeichnung1 }}
+    </h3>
+    <div class="itemIntroText" [class.ausblenden]="(this.artikelData.Langtext.length > 500) ? toggleAusblenden : false" [innerHTML]="artikelData.LangtextHTML"></div>
+    <a class="weiterlesenBox" [class.weiterlesen]="(this.artikelData.Langtext.length > 500) ? !toggleAusblenden : true" (click)="onClick()">weiterlesen ...</a>
+  </div>
+</article>

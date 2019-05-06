@@ -1,36 +1,10 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { ArtikelData } from '../interfaces/artikel-data'
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-artikel',
-  template: `
-    <div>
-      <header><h1>{{ artikelData.Bezeichnung1 }}</h1></header>
-      <div class="itemBody">
-        <div class="itemFullText" [innerHTML]="(artikelVortext ? artikelVortext + '<br>' : '') + artikelData.LangtextHTML"></div>
-      </div>
-      <div class="itemExtraFields"></div>
-      <ul class="gkBullet1">
-        <li class="even typeTextfield group2">
-          <span class="itemExtraFieldsLabel">Artikelnummer: </span>
-          <span class="itemExtraFieldsValue">{{ artikelData.Artikelnummer }}</span>
-        </li>
-        <li class="odd typeImage group2">
-          <span class="itemExtraFieldsLabel" style="float: left">Artikelbild: </span>
-          <span class="itemExtraFieldsValue"><img [src]="'https://protronic-gmbh.de/images/Produkte/RZ24/pics/' + artikelData.Artikelnummer + '_web.png'" alt="" style="min-width: 500px; min-height: 500px"></span>
-        </li>
-      </ul>
-      <div class="itemLinks">
-        <div class="itemTagsBlock">
-          <h3>Ähnliche Artikel</h3>
-          <div *ngFor="let similarity of similarKeys; index as i;">
-            <h4> {{ similarity }} </h4>
-            <app-artikel-liste [allArtikelData]="similarArtikelData[similarity]" secondaryHeader="" mainHeader=""></app-artikel-liste>
-          </div>
-        </div>
-      </div>
-    </div>
-  `,
+  templateUrl: './artikel.component.html',
   styleUrls: [
     './artikel.component.scss'
   ]
@@ -39,15 +13,45 @@ export class ArtikelComponent implements OnInit {
   @Input() artikelData: ArtikelData;
   @Input() similarArtikelData: any;
   @Input() artikelVortext: string = "";
+  @Output() collapseClicked = new EventEmitter();
 
   similarKeys: Array<string>;
+  imageList: String[] = [];
+  chosenImage: number = 0;
 
   constructor() { }
 
-  ngOnInit() {
-    if(this.similarArtikelData){
-      this.similarKeys = Object.keys(this.similarArtikelData)
-    }
+  onClick(){
+    this.collapseClicked.emit('collapseClick');
   }
 
+  ngOnInit() {
+    // if(this.similarArtikelData){
+    //   this.similarKeys = Object.keys(this.similarArtikelData)
+    // }
+    
+    this.fetchNextImage(0);
+  }
+
+  fetchNextImage(i: number){
+    let link = `/images/Produkte/RZ24/pics/${this.artikelData.Artikelnummer}_${i}_web.png`;
+    if (i === 0)
+      link = `/images/Produkte/RZ24/pics/${this.artikelData.Artikelnummer}_web.png`;
+    fetch(link)
+      .then( response => {
+        if(response.ok){
+          this.imageList.push(link);
+          this.fetchNextImage(i + 1)
+        }
+      })
+  }
+
+  imageClick(){
+    if(this.chosenImage + 1 == this.imageList.length){
+      this.chosenImage = 0;
+    }
+    else{
+      this.chosenImage += 1;
+    }
+  }
 }

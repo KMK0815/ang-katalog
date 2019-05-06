@@ -1,0 +1,27 @@
+<div class="itemContainer itemContainerLast">
+  <article class="">
+    <div class="itemBlock">
+      <h4><a (click)="onClick()" href="javascript:;">{{ artikelData.Bezeichnung1 }}</a></h4>
+      <div class="itemBody ">
+        <div class="itemIntroText"
+          [innerHTML]="(artikelVortext ? artikelVortext + '<br>' : '') + artikelData.LangtextHTML"></div>
+      </div>
+      <div class="itemExtraFields">
+        <ul style="list-style:none;">
+          <li class="even typeTextfield group2" style="list-style: none;">
+            <span class="itemExtraFieldsLabel">Artikelnummer: </span>
+            <span class="itemExtraFieldsValue">{{ artikelData.Artikelnummer }}</span>
+          </li>
+          <li class="odd typeImage group2" style="list-style: none;" *ngIf="imageList">
+            <span class="itemExtraFieldsLabel" style="float: left">Artikelbild(er): </span>
+            <span class="itemExtraFieldsValue"><img
+                (click)="imageClick()"
+                [src]="imageList[chosenImage]"
+                alt="Produkt Bild" ></span>
+            <div *ngIf="imageList.length > 1" class="imageChooser" style="text-align: right"><a *ngFor="let image of imageList; index as i" href="javascript:;" (click)="chosenImage=i" style="padding: 5px; Border: 1px solid #e5e5e5; border-radius: 2px">{{ i }}</a></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</div>

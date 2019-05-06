@@ -1,22 +1,25 @@
-<div class="itemContainer itemContainerLast" style="width:99.9%;">
-  <article class="itemView groupSecondary">
+<div *ngIf="!showDetails && artikelData.Sprache === 'ZAN' && artikelData.Bezeichnung1" class="smallArticle itemContainer itemContainerLast" style="width:99.9%;">
+  <article class="">
     <div class="itemBlock">
-      <div class="itemImageBlock"> 
-        <img [src]="'https://protronic-gmbh.de/images/thumb/' + this.artikelData.Artikelnummer + '_thumb.png'" alt="" style="width: 100px; height: 100px;">						
+      <div class="itemImageBlock" style="float: right;"> 
+        <a (click)="onClick(event)" href="javascript:;"><img *ngIf="artikelData.USER_Katalogbild === '-1'" [src]="'/images/thumb/' + this.artikelData.Artikelnummer + '_thumb.png'" alt=" "></a>
       </div>
       <h4>
-        <a href="">{{ this.artikelData.Bezeichnung1 }}</a>
+        <a (click)="onClick(event)" href="javascript:;">{{ this.artikelData.Bezeichnung1 }}</a>
       </h4>
       <div class="itemBody">  												
-        <div class="itemIntroText"> {{ this.artikelData.Langtext }} </div>
-        <div class="itemExtraFields">
-          <ul>
-            Artikelnummer:
-            {{ this.artikelData.Artikelnummer }}																																																																									
+        <div class="" [innerHTML]="artikelData.LangtextHTML"></div>
+        <div class="">
+          <ul class="artikelNummer" style="list-style: none">
+              <li class="even typeTextfield group2" style="list-style: none;">
+                  <span class="itemExtraFieldsLabel">Artikelnummer: </span>
+                  <span class="itemExtraFieldsValue">{{ artikelData.Artikelnummer }}</span>
+                </li>
           </ul>
         </div>
       </div>
     </div>
   </article>
 </div>
-<div class="clr"></div>
+<app-artikel *ngIf="showDetails && artikelData.Sprache === 'ZAN'" [artikelData]="this.artikelData" (collapseClicked)="onClick(e)"></app-artikel>
+<app-vortext *ngIf="artikelData.Sprache !== 'ZAN'" [artikelData]="this.artikelData"></app-vortext>
